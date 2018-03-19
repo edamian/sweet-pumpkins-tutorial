@@ -1,0 +1,12 @@
+.movies {
+    flex-basis: 80%;
+    padding: 20 px 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+ul {
+	display: flex;
+	padding: 20px;
+}
