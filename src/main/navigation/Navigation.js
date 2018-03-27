@@ -2,56 +2,32 @@ import React from "react";
 import "./Navigation.css";
 import Selection from "./Selection";
 import Slider from "./Slider";
+import SearchButton from './SearchButton';
 
 class Navigation extends React.Component {
-  state = {
-    genre: 'comedy',
-    year: {
-        label: "year",
-        min: 1990,
-        max: 2017,
-        step: 1,
-        value: {min: 2000, max: 2017}
-    },
-    rating: {
-        label: "rating",
-        min: 0,
-        max: 10,
-        step: 1,
-        value: { ming: 8, max: 10}
-    },
-    runtime: {
-        label: "runtime",
-        min: 0,
-        max: 300,
-        step: 15,
-        value: {min: 60, max: 120}
-    }
+  
+  componentDidMount() {
+    fetch(this.props.url)
+      .then( response => response.json())
+      .then( data => this.props.setGenres(data.genres))
+      .catch( error => console.log(error));
   }
 
-  onGenreChange = event => {
-    this.setState({ genre: event.target.value });
-  };
-
-  onChange = data => {
-    this.setState({
-        ...this.state[data.type],
-        value: data.value
-    });
-  };
-
   render() {
+    const { genre, genres, onGenreChange, onChange, year, rating, runtime, onSearchButtonClick } = this.props;
     return (
       <section className="navigation">
         <Selection
-          genre={this.state.genre}
-          onGenreChange={this.onGenreChange}
+          genre={genre}
+          onGenreChange={onGenreChange}
+          genres={genres}
         />
 
-        <Slider data={this.state.year} onChange={this.onChange} />
-        <Slider data={this.state.rating} onChange={this.onChange} />
-        <Slider data={this.state.runtime} onChange={this.onChange} />
+        <Slider data={year} onChange={onChange} />
+        <Slider data={rating} onChange={onChange} />
+        <Slider data={runtime} onChange={onChange} />
 
+        <SearchButton onClick={onSearchButtonClick}/>
       </section>
     )
   }
